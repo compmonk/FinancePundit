@@ -1,0 +1,7 @@
+/node_modules/
+/FinancePundit/static/
+/src/fonts/
+/package-lock.json
+/FinancePundit/db.sqlite3
+/FinancePundit/config.json
+/db/

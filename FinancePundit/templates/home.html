@@ -1,0 +1,98 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Pundit</title>
+    <script src="{% static 'js/vendor.min.js' %}"></script>
+    <script src="{% static 'js/custom.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.min.css' %}">
+</head>
+<body class="form-v8 background">
+<div class="page-content">
+    <div class="form-v8-content">
+
+        <div class="form-right">
+            <div class="tab">
+                <div class="tab-inner">
+                    <button class="tablinks" onclick="openCity(event, 'sign-up')" id="defaultOpen">Sign Up</button>
+                </div>
+                <div class="tab-inner">
+                    <button class="tablinks" onclick="openCity(event, 'sign-in')">Sign In</button>
+                </div>
+            </div>
+            <form class="form-detail" action="auth/signup/" method="post">
+                {% csrf_token %}
+                <div class="tabcontent" id="sign-up">
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="text" name="email" id="signup-email" class="input-text" required>
+                            <span class="label">E-Mail</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="password" name="password" id="signup-password" class="input-text" required>
+                            <span class="label">Password</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="password" name="confirm_password" id="confirm_password" class="input-text"
+                                   required>
+                            <span class="label">Comfirm Password</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row-last">
+                        <input type="submit" name="register" class="register" value="Register">
+                    </div>
+                </div>
+            </form>
+            <form class="form-detail" action="auth/signin/" method="post">
+                {% csrf_token %}
+                <div class="tabcontent" id="sign-in">
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="text" name="email" id="signin-email" class="input-text" required>
+                            <span class="label">E-Mail</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="password" name="password" id="signin-password" class="input-text" required>
+                            <span class="label">Password</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row-last">
+                        <input type="submit" name="register" class="register" value="Sign In">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+</body>
+</html>
