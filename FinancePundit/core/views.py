@@ -1,3 +1,4 @@
+from django.shortcuts import render, redirect
 from rest_framework_mongoengine import viewsets
 from rest_framework_mongoengine.generics import RetrieveUpdateDestroyAPIView
 
@@ -30,3 +31,10 @@ class StockDetail(RetrieveUpdateDestroyAPIView):
     #
     # def delete(self, request, *args, **kwargs):
     #     return self.destroy(self, request, *args, **kwargs)
+
+
+def dashboard(request):
+    if request.session.get('userId', None) is not None:
+        return render(request, "dashboard.html")
+    else:
+        return redirect("/")

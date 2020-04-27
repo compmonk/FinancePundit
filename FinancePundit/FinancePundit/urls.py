@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from core.views import dashboard
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name="home.html")),
-    path('api/', include('core.urls')),
-    path('auth/', include('accounts.urls')),
-    path('dashboard/', TemplateView.as_view(template_name="dashboard.html")),
+    path('', include('accounts.urls')),
+    path('', include('core.urls')),
+    path('dashboard/', dashboard, name='dashboard'),
     path('error/', TemplateView.as_view(template_name="error.html")),
 ]

@@ -1,13 +1,10 @@
 from uuid import uuid4 as UUID
 
-from mongoengine.fields import *
-
-from mongoengine import Document
-from mongoengine.queryset import QuerySet, Q
-
-from core.models.StockVolume import StockVolume
-
 from core.models.Stock import Stock
+from core.models.StockVolume import StockVolume
+from mongoengine import Document
+from mongoengine.fields import *
+from mongoengine.queryset import QuerySet
 
 
 class UserManager(QuerySet):
@@ -36,5 +33,14 @@ class User(Document):
     id = UUIDField(required=True, primary_key=True, default=UUID)
     firebaseId = StringField(required=True)
     stockVolumes = EmbeddedDocumentListField(StockVolume)
+    target = DecimalField(required=True)
 
-    meta = {'queryset_class': UserManager}
+    def __str__(self):
+        return self.firebaseId
+
+    def __repr__(self):
+        return self.firebaseId
+
+    meta = {
+        'queryset_class': UserManager
+    }

@@ -16,9 +16,9 @@ const sassFiles = [
 
 const vendorJsFiles = [
     "./node_modules/jquery/dist/jquery.js",
-    "./node_modules/popper.js/dist/umd/popper.min.js",
-    "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-    "./node_modules/select2/dist/js/select2.full.min.js"
+    "./node_modules/popper.js/dist/umd/popper.js",
+    "./node_modules/bootstrap/dist/js/bootstrap.js",
+    "./node_modules/select2/dist/js/select2.full.min.js",
 ];
 
 const customJs = [
@@ -61,6 +61,7 @@ gulp.task('js-custom', function (done) {
     done();
 });
 
+
 gulp.task('image', function (done) {
     gulp.src('./src/img/*')
         .pipe(imagemin())
@@ -68,6 +69,18 @@ gulp.task('image', function (done) {
     done();
 });
 
-gulp.task("build", gulp.parallel(["sass", "js-lib", "js-custom", "image"]));
+gulp.task('set-dev-node-env', function (done) {
+    process.env.NODE_ENV = 'development';
+    done();
+});
+
+gulp.task('set-prod-node-env', function (done) {
+    process.env.NODE_ENV = 'production';
+    done();
+});
+
+gulp.task('js', gulp.parallel(["set-dev-node-env", "js-lib", "js-custom"]));
+
+gulp.task("build", gulp.parallel(["set-dev-node-env", "sass", "js-lib", "js-custom", "image"]));
 
 gulp.task("default", gulp.series("build"));

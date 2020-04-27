@@ -3,6 +3,7 @@ chardet==3.0.4
 Django==2.2
 django-rest-framework-mongoengine==3.4.1
 djangorestframework==3.11.0
+dnspython==1.16.0
 gcloud==0.17.0
 googleapis-common-protos==1.51.0
 httplib2==0.17.0
@@ -24,6 +25,7 @@ pytz==2019.3
 requests==2.22.0
 requests-toolbelt==0.7.0
 rsa==4.0
+schedule==0.6.0
 six==1.14.0
 sqlparse==0.3.0
 urllib3==1.25.8

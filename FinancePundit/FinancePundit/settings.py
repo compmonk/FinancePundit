@@ -103,7 +103,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -154,19 +153,19 @@ INFLUX_PASS = get_config('INFLUX_PASS')
 
 FIREBASE_CONFIG = get_config('firebaseConfig')
 
-if os.getenv('GAE_APPLICATION', None):
-    mongo_connection = get_config('mongoAtlas')
-    mongoengine.connect(
-        db=mongo_connection['db'],
-        host=mongo_connection['host'],
-        alias=mongo_connection['alias'],
-        username=mongo_connection['username'],
-        password=mongo_connection['password']
-    )
-else:
-    mongo_connection = get_config('mongoLocal')
-    mongoengine.connect(
-        db=mongo_connection['db'],
-        host=mongo_connection['host'],
-        alias=mongo_connection['alias'],
-    )
+# if os.getenv('GAE_APPLICATION', None):
+mongo_connection = get_config('mongoAtlas')
+mongoengine.connect(
+    db=mongo_connection['db'],
+    host=mongo_connection['host'],
+    alias=mongo_connection['alias'],
+    username=mongo_connection['username'],
+    password=mongo_connection['password']
+)
+# else:
+#     mongo_connection = get_config('mongoLocal')
+#     mongoengine.connect(
+#         db=mongo_connection['db'],
+#         host=mongo_connection['host'],
+#         alias=mongo_connection['alias'],
+#     )

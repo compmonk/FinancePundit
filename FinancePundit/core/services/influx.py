@@ -1,4 +1,4 @@
-from random import randrange
+import random
 
 from influxdb import InfluxDBClient
 
@@ -7,22 +7,14 @@ from django.conf import settings
 
 
 class InfluxPayload:
-    def __init__(self, stock_volume):
-        # self.time = now()
-        # self.symbol = stock_volume.stock.symbol
-        # self.name = stock_volume.stock.name
-        # self.market = stock_volume.stock.market
-        # self.volume = stock_volume.volume
-        # self.value = randrange(stock_volume.stock.initial * (1 - stock_volume.stock.volatility),
-        #                        stock_volume.stock.initial * (1 + stock_volume.stock.volatility))
-
-        self.measurement = stock_volume.stock.name
+    def __init__(self, user, stock_volume):
+        self.measurement = "stock"
         self.tags = {
             "name": stock_volume.stock.name,
             "market": stock_volume.stock.market,
             "symbol": stock_volume.stock.symbol,
             "sector": stock_volume.stock.sector,
-
+            "user": user.firebaseId
         }
         self.time = now()
         self.fields = {
@@ -31,34 +23,37 @@ class InfluxPayload:
             "market": stock_volume.stock.market,
             "sector": stock_volume.stock.sector,
             "volume": stock_volume.volume,
-            "value": randrange(stock_volume.stock.initial * (1 - stock_volume.stock.volatility),
-                               stock_volume.stock.initial * (1 + stock_volume.stock.volatility))
+            "value": round(float(stock_volume.stock.initial) * 2 * random.random(), 2),
+            "user": user.firebaseId,
+            "target": round(float(user.target) * 2 * random.random(), 2),
         }
 
 
-class InfluxService:
+class InfluxClient:
     def __init__(self):
-        self.client = InfluxDBClient(settings.INFLUX_HOST,
-                                     443,
-                                     settings.INFLUX_USER,
-                                     settings.INFLUX_PASS,
-                                     settings.INFLUX_DATABASE,
-                                     True,
-                                     False)
+        self.client = InfluxDBClient(host=settings.INFLUX_HOST,
+                                     port=8086,
+                                     username=settings.INFLUX_USER,
+                                     password=settings.INFLUX_PASS,
+                                     database=settings.INFLUX_DATABASE
+                                     )
 
-    def post_stock_volume(self, stock_volume):
-        payload = InfluxPayload(stock_volume).__dict__
-        if self.client.write(payload):
-            print({
-                "time": now(),
-                "operation": "write",
-                "success": True,
-                "payload": payload
-            })
-        else:
-            print({
-                "time": now(),
-                "operation": "write",
-                "success": True,
-                "payload": payload
-            })
+
+def post_stock_volumes(influx_connection, users):
+    payload = []
+    for user in users:
+        for stock_volume in user.stockVolumes:
+            payload.append(InfluxPayload(user, stock_volume).__dict__)
+
+    if influx_connection.client.write_points(payload):
+        print({
+            "time": now().strftime("%Y%m%d%H%M%S"),
+            "operation": "write",
+            "success": True
+        })
+    else:
+        print({
+            "time": now().strftime("%Y%m%d%H%M%S"),
+            "operation": "write",
+            "success": True,
+        })

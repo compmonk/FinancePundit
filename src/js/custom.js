@@ -5,7 +5,6 @@ function initDropdown() {
     if (localStorage.getItem("stocks") === null) {
         $.getJSON("/api/stocks", function (data) {
             stocks = data;
-            console.log(stocks);
             localStorage.setItem('stocks', JSON.stringify(stocks));
             $('.stock').select2({
                 placeholder: "Please select a Stock",
@@ -19,7 +18,6 @@ function initDropdown() {
         });
     } else {
         stocks = JSON.parse(localStorage.getItem('stocks'));
-        console.log(stocks);
         $('.stock').select2({
             placeholder: "Please select a Stock",
             data: stocks.map(function (stock) {
@@ -44,9 +42,9 @@ function addStock() {
         "volume": document.getElementById('volume').value
     });
     $('#stock-volume tr:last').after(`<tr><td>${stockVolumes[stockVolumes.length - 1]['stock'].symbol}</td><td>${stockVolumes[stockVolumes.length - 1].volume}</td></tr>`);
-    console.log({
-        stockVolumes
-    });
+    // console.log({
+    //     stockVolumes
+    // });
     document.getElementById('stock').value = null;
     document.getElementById('volume').value = 0
 }
